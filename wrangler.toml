@@ -1,0 +1,9 @@
+name = "research"
+compatibility_date = "2026-06-10"
+pages_build_output_dir = "dist"
+
+# research.example.com = CF Pages 前端工作台（本 repo）。
+# 后端 API（research-worker）通过 route research.example.com/api/* 同源接管，
+# 前端用相对路径 fetch /api/...，无需 CORS。
+# 部署（git-only）：
+#   wrangler pages deploy dist --project-name research

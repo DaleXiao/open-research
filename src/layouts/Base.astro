@@ -1,0 +1,71 @@
+---
+interface Props {
+  title?: string;
+}
+const { title = "research · 论文精读" } = Astro.props;
+import "../styles/tokens.css";
+---
+
+<!doctype html>
+<html lang="zh" data-uilang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="单篇论文精读工作台：中英对照翻译、公式保留。" />
+    <title>{title}</title>
+    <!-- favicon 与网站图标 -->
+    <link rel="icon" type="image/png" href="https://ph-files.imgix.net/4daf6ed9-a271-4ca4-9214-5acc6344e89b.png?auto=compress,format&codec=mozjpeg&cs=strip&dpr=2&fit=crop&frame=1&h=64&w=64" />
+    <link rel="apple-touch-icon" href="https://ph-files.imgix.net/4daf6ed9-a271-4ca4-9214-5acc6344e89b.png?auto=compress,format&codec=mozjpeg&cs=strip&dpr=2&fit=crop&frame=1&h=180&w=180" />
+    <link rel="shortcut icon" href="https://ph-files.imgix.net/4daf6ed9-a271-4ca4-9214-5acc6344e89b.png?auto=compress,format&codec=mozjpeg&cs=strip&dpr=2&fit=crop&frame=1&h=64&w=64" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- KaTeX：公式渲染，CSS 全局，JS 由阅读岛按需引入 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+      integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+"
+      crossorigin="anonymous"
+    />
+    <!-- F4 markmap 思维导图：CDN autoloader（同 notes 站，登录门禁内可达）。
+         window.markmap = { Transformer, Markmap } 供 mindmap.ts 销毁重建 SVG。 -->
+    <script is:inline src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18"></script>
+    <script is:inline>
+      // 防昼夜闪烁：paint 前先按持久化/系统偏好定 data-theme
+      (function () {
+        try {
+          var s = localStorage.getItem("research.theme");
+          var t = s === "day" || s === "night"
+            ? s
+            : (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "day" : "night");
+          document.documentElement.setAttribute("data-theme", t);
+        } catch (e) {}
+      })();
+    </script>
+    <script is:inline>
+      // 防界面语言闪烁：paint 前按持久化/浏览器偏好定 <html lang>/data-uilang（与昼夜防闪同款时机）
+      (function () {
+        try {
+          var s = localStorage.getItem("research.uiLang");
+          var l = s === "zh" || s === "en"
+            ? s
+            : ((navigator.language || "").toLowerCase().indexOf("zh") === 0 ? "zh" : "en");
+          var r = document.documentElement;
+          r.setAttribute("lang", l);
+          r.setAttribute("data-uilang", l);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  /* 页面级布局壳，组件样式随各自 scope */
+  html, body { height: 100%; }
+</style>

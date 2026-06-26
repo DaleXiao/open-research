@@ -1,0 +1,171 @@
+/* research.example.com — 设计系统 tokens（M4 — full terminal）
+ * 方向反转：弃 M3 暖纸暖风衬线，整站转 terminal / CLI 美学。
+ * 等宽字、近黑底 + phosphor green 前景、命令行控件、单色 SVG 图标、极淡 scanline。
+ * 昼夜手动切换（[data-theme="day|night"]）+ 系统偏好回退；中英显隐手动切换。
+ * 功能不变（导入/翻译/对照/公式/昼夜/中英），只换皮。 */
+
+:root {
+  --radius: 2px;
+  --radius-sm: 2px;
+
+  --fs-xs: 0.76rem; --fs-sm: 0.84rem; --fs-base: 0.95rem;
+  --fs-lg: 1.1rem;  --fs-xl: 1.4rem;  --fs-2xl: 1.85rem;
+
+  --sp-1: 0.25rem; --sp-2: 0.5rem; --sp-3: 0.75rem; --sp-4: 1rem;
+  --sp-6: 1.5rem;  --sp-8: 2rem;   --sp-12: 3rem;
+
+  /* 全站等宽：JetBrains Mono / IBM Plex Mono 首选，中文等宽回退 Sarasa / Noto Sans Mono CJK */
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", "SF Mono", ui-monospace,
+    "Sarasa Mono SC", "Noto Sans Mono CJK SC", "Cascadia Code", Menlo, Consolas, monospace;
+  --font-sans: var(--font-mono);
+  --font-serif: var(--font-mono);
+
+  --measure: 42rem;
+  --transition: 120ms steps(2, end);
+}
+
+/* ── 夜间（默认）：近黑底 + phosphor green 前景，终端发光观感 ── */
+:root,
+:root[data-theme="night"] {
+  --c-bg:        #0b0e0c;   /* 近黑，极低彩偏冷绿 */
+  --c-bg-raised: #11160f;
+  --c-bg-sunken: #070906;
+  --c-line:      #1f2a1d;
+  --c-line-soft: #161e14;
+
+  --c-ink:       #c8f7d4;   /* 暖白偏绿的主文本（phosphor 余晖） */
+  --c-ink-soft:  #6fb585;
+  --c-ink-faint: #3f6e4f;
+
+  --c-en:        #7fcf95;   /* 英文原文：退后的磷光绿 */
+  --c-zh:        #d6ffe0;   /* 中文译文：最亮磷光 */
+
+  --c-accent:    #33ff66;   /* phosphor green — 贯穿主强调色 */
+  --c-accent-dim: #1fb84a;
+  --c-pending:   #ffb000;   /* 待翻：amber 警示 */
+  --c-ok:        #33ff66;
+  --c-danger:    #ff5f56;
+
+  --c-glow: 0 0 6px rgba(51, 255, 102, 0.35);
+  --shadow: 0 0 0 1px var(--c-line);
+  color-scheme: dark;
+}
+
+/* ── 日间：浅终端，灰白底 + 深墨绿前景，仍等宽，不回暖纸 ── */
+:root[data-theme="day"] {
+  --c-bg:        #e8ece6;   /* 冷灰白底 */
+  --c-bg-raised: #f2f5ef;
+  --c-bg-sunken: #dce0d8;
+  --c-line:      #c0c8bc;
+  --c-line-soft: #d2d8ce;
+
+  --c-ink:       #16241a;   /* 深墨绿文本 */
+  --c-ink-soft:  #3c5942;
+  --c-ink-faint: #6a7e6e;
+
+  --c-en:        #3c5942;
+  --c-zh:        #16241a;
+
+  --c-accent:    #0f7a34;   /* 深终端绿，浅底够沉 */
+  --c-accent-dim: #146b32;
+  --c-pending:   #9a6500;
+  --c-ok:        #0f7a34;
+  --c-danger:    #c0392b;
+
+  --c-glow: none;
+  --shadow: 0 0 0 1px var(--c-line);
+  color-scheme: light;
+}
+
+/* 无显式 data-theme 时跟随系统偏好（暗为默认上面已给，亮在此覆盖） */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --c-bg:        #e8ece6;
+    --c-bg-raised: #f2f5ef;
+    --c-bg-sunken: #dce0d8;
+    --c-line:      #c0c8bc;
+    --c-line-soft: #d2d8ce;
+    --c-ink:       #16241a;
+    --c-ink-soft:  #3c5942;
+    --c-ink-faint: #6a7e6e;
+    --c-en:        #3c5942;
+    --c-zh:        #16241a;
+    --c-accent:    #0f7a34;
+    --c-accent-dim: #146b32;
+    --c-pending:   #9a6500;
+    --c-ok:        #0f7a34;
+    --c-danger:    #c0392b;
+    --c-glow: none;
+    --shadow: 0 0 0 1px var(--c-line);
+    color-scheme: light;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-mono);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  color: var(--c-ink);
+  background: var(--c-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background var(--transition), color var(--transition);
+  position: relative;
+}
+
+a { color: var(--c-accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+:focus-visible { outline: 1px solid var(--c-accent); outline-offset: 2px; border-radius: 0; }
+
+/* 命令行式按钮：方框、等宽、无圆角 */
+button {
+  font: inherit;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  border: 1px solid var(--c-line);
+  background: transparent;
+  color: var(--c-ink-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+  transition: border-color var(--transition), background var(--transition), color var(--transition);
+}
+button:hover:not(:disabled) { border-color: var(--c-accent); color: var(--c-accent); }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+button.primary {
+  background: transparent;
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+  font-weight: 500;
+  text-shadow: var(--c-glow);
+}
+button.primary:hover:not(:disabled) { background: var(--c-accent); color: var(--c-bg); }
+
+/* inline 单色 SVG 图标：跟随前景色 */
+.icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.125em; fill: none; stroke: currentColor; stroke-width: 1.6; flex: none; }
+
+::selection { background: var(--c-accent); color: var(--c-bg); }
+
+/* ── scanline 极淡叠层（替代 M3 颗粒层，opacity ≤0.04） ── */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: repeating-linear-gradient(
+    0deg,
+    currentColor 0,
+    currentColor 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  color: var(--c-accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  body::after { display: none; }
+}

@@ -1,0 +1,925 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="research · 论文精读工作台">
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="prompt">research</span><span class="cursor" aria-hidden="true">▋</span>
+        <span class="tagline" data-i18n="brand.tagline">paper reader · 中英对照</span>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-controls">
+          <div id="uilang-switch" class="seg" role="group" aria-label="界面语言"></div>
+          <button id="theme-btn" class="icon-btn theme-btn" type="button" aria-label="切换昼夜">
+            <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+            <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+          </button>
+        </div>
+        <div class="import">
+          <span class="import-prefix" aria-hidden="true">&gt;</span>
+          <input
+            id="paper-input"
+            type="text"
+            placeholder="arxiv id or url, e.g. 1706.03762"
+            data-i18n-attr="placeholder:import.placeholder;aria-label:import.trigger.aria"
+            aria-label="Click to import a paper"
+            role="button"
+            readonly
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button id="import-btn" class="primary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+            <span data-i18n="import.btn">import</span>
+          </button>
+        </div>
+        <button id="papers-open" class="icon-btn" type="button" aria-label="论文库" data-i18n-attr="aria-label:papers.open.aria">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 5a1 1 0 0 1 1-1h5v16H5a1 1 0 0 1-1-1V5z"/><path d="M14 4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-5V4z"/><path d="M7 8h0M7 11h0"/></svg>
+          <span data-i18n="papers.open">papers</span>
+        </button>
+        <button id="qa-open" class="icon-btn" type="button" aria-label="AI 问 paper" data-i18n-attr="aria-label:qa.open.aria" aria-expanded="false" aria-controls="qa-drawer">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M21 12a8 8 0 0 1-8 8H7l-4 2 1-4a8 8 0 1 1 17-6z"/><path d="M9 11h6m-6 3h4"/></svg>
+          <span data-i18n="qa.open">ask</span>
+        </button>
+        <button id="mindmap-open" class="icon-btn" type="button" aria-label="生成论文思维导图" data-i18n-attr="aria-label:mindmap.open.aria" aria-expanded="false" aria-controls="mindmap-overlay">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M7 12h4m0 0l5-5m-5 5l5 5"/></svg>
+          <span data-i18n="mindmap.open">mindmap</span>
+        </button>
+        <button id="notes-open" class="icon-btn" type="button" aria-label="笔记面板" data-i18n-attr="aria-label:note.open.aria" aria-expanded="false" aria-controls="notes-drawer">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4V3z"/></svg>
+          <span data-i18n="note.open">notes</span><span id="notes-count" class="notes-count" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="status-line"><span class="status-prefix" aria-hidden="true">$</span> <span id="status" data-kind="info"></span></div>
+
+    <div class="workbench">
+      <aside class="sidebar">
+        <div class="paper-meta"><h1 id="paper-title" data-i18n="paper.none">// no paper loaded</h1></div>
+        <nav id="toc" class="toc" aria-label="目录" data-i18n-attr="aria-label:toc.aria"></nav>
+      </aside>
+
+      <main class="reader">
+        <div class="reader-toolbar">
+          <button id="translate-btn" disabled>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 5h7M7 4v1c0 4-1.5 7-4 9m1-4c0 2 2 4 5 4m6 6l3-7 3 7m-5-2h4"/></svg>
+            <span data-i18n="translate.btn">translate --all</span>
+          </button>
+          <span id="progress" class="progress" data-done="0"></span>
+          <div id="view-seg" class="seg" role="group" aria-label="显示语言" data-i18n-attr="aria-label:view.aria">
+            <span class="seg-prefix" aria-hidden="true">lang:</span>
+            <button data-mode="both" aria-pressed="true" data-i18n="view.both">both</button>
+            <button data-mode="zh" aria-pressed="false" data-i18n="view.zh">zh</button>
+            <button data-mode="en" aria-pressed="false" data-i18n="view.en">en</button>
+          </div>
+        </div>
+        <article id="stream" class="stream" data-view="both">
+          <p class="empty-hint">
+            <span class="hint-prompt">research&nbsp;❯</span> <span data-i18n="empty.hint">import an arXiv paper to begin.
+            公式与图表原样保留，译文按段懒翻——可整篇翻译，也可逐段点 [译]。</span>
+          </p>
+        </article>
+      </main>
+    </div>
+
+    <!-- M5 「AI 问 paper」抽屉(右侧滑出,terminal 风) -->
+    <aside id="qa-drawer" class="qa-drawer" data-open="0" aria-hidden="true" aria-label="AI 问 paper" data-i18n-attr="aria-label:qa.open.aria">
+      <div class="qa-head">
+        <span class="qa-title"><span class="qa-title-prompt">research</span>&nbsp;❯ <span data-i18n="qa.title">ask</span></span>
+        <button id="qa-close" class="qa-close" type="button" aria-label="关闭" data-i18n-attr="aria-label:qa.close.aria">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div id="qa-history" class="qa-history">
+        <p class="qa-empty" data-i18n="qa.empty.import">// import a paper first</p>
+      </div>
+      <form id="qa-form" class="qa-form">
+        <div id="qa-scope" class="seg qa-scope" role="group" aria-label="问答范围" data-i18n-attr="aria-label:qa.scope.aria">
+          <span class="seg-prefix" aria-hidden="true">scope:</span>
+          <button data-scope="full" type="button" aria-pressed="true" data-i18n="qa.scope.full">full</button>
+          <button data-scope="selection" type="button" aria-pressed="false" data-i18n="qa.scope.selection">selection</button>
+        </div>
+        <p id="qa-sel-hint" class="qa-sel-hint" hidden></p>
+        <div class="qa-input-row">
+          <span class="qa-input-prefix" aria-hidden="true">&gt;</span>
+          <input
+            id="qa-q"
+            type="text"
+            placeholder="ask anything about this paper…"
+            data-i18n-attr="placeholder:qa.input.placeholder"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button id="qa-send" class="primary qa-send" type="submit" aria-label="发送" data-i18n-attr="aria-label:qa.send.aria"><span data-i18n="qa.send">send</span></button>
+        </div>
+      </form>
+    </aside>
+
+    <!-- F1 「批注/笔记」抽屉(右侧滑出,terminal 风,结构同 qa-drawer) -->
+    <aside id="notes-drawer" class="qa-drawer notes-drawer" data-open="0" aria-hidden="true" aria-label="笔记面板" data-i18n-attr="aria-label:note.open.aria">
+      <div class="qa-head">
+        <span class="qa-title"><span class="qa-title-prompt">research</span>&nbsp;❯ <span data-i18n="note.title">notes</span></span>
+        <button id="notes-close" class="qa-close" type="button" aria-label="关闭" data-i18n-attr="aria-label:note.close.aria">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div id="notes-list" class="qa-history notes-list">
+        <p class="note-empty" data-i18n="note.empty.none">// no notes yet</p>
+      </div>
+    </aside>
+
+    <!-- F4 思维导图全屏遮罩(markmap SVG，terminal 皮) -->
+    <div id="mindmap-overlay" class="mindmap-overlay" data-open="0" aria-hidden="true" role="dialog" aria-modal="true" aria-label="思维导图" data-i18n-attr="aria-label:mindmap.open.aria">
+      <div class="mindmap-panel">
+        <div class="mindmap-head">
+          <span class="qa-title"><span class="qa-title-prompt">research</span>&nbsp;❯ <span data-i18n="mindmap.title">mindmap</span></span>
+          <span id="mindmap-status" class="mindmap-status" data-kind="info"></span>
+          <div class="mindmap-head-actions">
+            <button id="mindmap-regen" class="mindmap-regen" type="button" aria-label="重新生成脑图" data-i18n-attr="aria-label:mindmap.regen.aria">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+              <span data-i18n="mindmap.regen">regenerate</span>
+            </button>
+            <button id="mindmap-close" class="qa-close" type="button" aria-label="关闭" data-i18n-attr="aria-label:mindmap.close.aria">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </div>
+        </div>
+        <div id="mindmap-stage" class="mindmap-stage"></div>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { mountReader } from "../lib/reader";
+  const root = document.querySelector<HTMLElement>(".app");
+  if (root) mountReader(root);
+</script>
+
+<style>
+  .app { display: flex; flex-direction: column; min-height: 100vh; }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    padding: var(--sp-2) var(--sp-6);
+    border-bottom: 1px solid var(--c-line);
+    background: var(--c-bg-raised);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: baseline; gap: var(--sp-2); }
+  .prompt {
+    font-weight: 700;
+    font-size: var(--fs-lg);
+    color: var(--c-accent);
+    letter-spacing: 0.02em;
+    text-shadow: var(--c-glow);
+  }
+  .cursor {
+    color: var(--c-accent);
+    font-size: var(--fs-lg);
+    animation: blink 1.1s steps(1) infinite;
+    margin-left: -0.18em;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+  .tagline { color: var(--c-ink-faint); font-size: var(--fs-xs); }
+
+  .topbar-right { display: flex; align-items: center; gap: var(--sp-3); flex: 1 1 40rem; justify-content: flex-start; }
+  /* 语言 + 主题切换组，并排于 import 左侧（整组靠左） */
+  .topbar-controls { display: inline-flex; align-items: center; gap: var(--sp-2); flex: 0 0 auto; }
+  /* 顶栏控件统一高度基准 2.5rem（主题钮原偏低），box-sizing 保证 border+padding 不擑高 */
+  .topbar-controls .seg,
+  .topbar-controls .theme-btn,
+  .topbar-right .icon-btn,
+  #import-btn,
+  .import input { height: 2.5rem; box-sizing: border-box; }
+  .topbar-controls .seg,
+  .topbar-controls .theme-btn,
+  .topbar-right .icon-btn,
+  #import-btn { display: inline-flex; align-items: center; }
+  .theme-btn { padding: var(--sp-1) var(--sp-2); }
+  /* 顶栏语言 seg 不用 .seg 的 margin-left:auto（那是 reader 工具栏 view-seg 用的） */
+  .topbar-controls .seg { margin-left: 0; }
+  /* import 输入框加长：flex-grow 吞空闲空间 → 把功能钮组推到右缘 */
+  .import { display: flex; align-items: center; gap: var(--sp-2); flex: 1 1 auto; min-width: 16rem; }
+  .import-prefix { color: var(--c-accent); font-weight: 700; }
+  .import input {
+    flex: 1;
+    font: inherit;
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--c-ink);
+    background: var(--c-bg-sunken);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-2) var(--sp-3);
+    caret-color: var(--c-accent);
+  }
+  .import input::placeholder { color: var(--c-ink-faint); }
+  .import input:focus { border-color: var(--c-accent); outline: none; }
+
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    white-space: nowrap;
+    font-size: var(--fs-sm);
+  }
+  /* 昼夜：图标语义指示「点击后切到的目标」（）。
+     夜间 → 显太阳（暗示可切白天）；白天 → 显月亮（暗示可切夜间）。 */
+  .icon-moon { display: none; }
+  .icon-sun { display: inline-block; }
+  :root[data-theme="day"] .icon-sun { display: none; }
+  :root[data-theme="day"] .icon-moon { display: inline-block; }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme]) .icon-sun { display: none; }
+    :root:not([data-theme]) .icon-moon { display: inline-block; }
+  }
+
+  #import-btn { display: inline-flex; align-items: center; gap: var(--sp-2); }
+
+  .status-line {
+    min-height: 1.5rem;
+    padding: var(--sp-1) var(--sp-6);
+    font-size: var(--fs-xs);
+    border-bottom: 1px solid var(--c-line-soft);
+    color: var(--c-ink-soft);
+  }
+  .status-prefix { color: var(--c-accent); font-weight: 700; }
+  #status[data-kind="error"] { color: var(--c-danger); }
+  #status[data-kind="ok"] { color: var(--c-ok); }
+  #status[data-kind="info"] { color: var(--c-ink-soft); }
+
+  .workbench { display: grid; grid-template-columns: 15rem 1fr; flex: 1; min-height: 0; }
+  .sidebar {
+    border-right: 1px solid var(--c-line);
+    padding: var(--sp-6) var(--sp-4);
+    overflow-y: auto;
+    position: sticky;
+    top: 3.2rem;
+    align-self: start;
+    max-height: calc(100vh - 3.2rem);
+  }
+  .paper-meta h1 {
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--c-ink-soft);
+    margin-bottom: var(--sp-4);
+    word-break: break-word;
+  }
+
+  /* ToC 列表/项是 reader.ts JS 运行期注入(无 astro scope cid),scoped 选择器永不命中 → :global */
+  :global(.toc-list) { list-style: none; display: flex; flex-direction: column; gap: 1px; }
+  :global(.toc-item a) {
+    display: block;
+    color: var(--c-ink-soft);
+    font-size: var(--fs-xs);
+    padding: var(--sp-1) var(--sp-2);
+    border-left: 2px solid transparent;
+  }
+  :global(.toc-item a:hover) { color: var(--c-accent); background: var(--c-bg-sunken); border-left-color: var(--c-accent); text-decoration: none; }
+  :global(.toc-l1 a) { padding-left: var(--sp-4); color: var(--c-ink-faint); }
+  :global(.toc-l2 a) { padding-left: var(--sp-6); }
+
+  .reader { overflow-y: auto; }
+  .reader-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+    padding: var(--sp-2) var(--sp-8);
+    border-bottom: 1px solid var(--c-line-soft);
+    position: sticky;
+    top: 0;
+    background: var(--c-bg);
+    z-index: 5;
+    flex-wrap: wrap;
+  }
+  #translate-btn { display: inline-flex; align-items: center; gap: var(--sp-2); }
+  .progress { font-size: var(--fs-xs); color: var(--c-ink-soft); }
+  .progress[data-done="1"] { color: var(--c-ok); }
+
+  /* 中英显示切换:方括号命令行式分段 [ both | zh | en ] */
+  .seg {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: 1px var(--sp-2);
+    font-size: var(--fs-xs);
+  }
+  .seg-prefix { color: var(--c-ink-faint); padding: 0 var(--sp-1); }
+  .seg button {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--c-ink-soft);
+    padding: 1px var(--sp-2);
+    font-size: var(--fs-xs);
+  }
+  .seg button:hover:not([aria-pressed="true"]) { color: var(--c-accent); background: transparent; }
+  .seg button[aria-pressed="true"] { color: var(--c-accent); text-shadow: var(--c-glow); }
+  .seg button[aria-pressed="true"]::before { content: "["; }
+  .seg button[aria-pressed="true"]::after { content: "]"; }
+
+  .stream { max-width: 80rem; margin: 0 auto; padding: var(--sp-8); }
+  .empty-hint { color: var(--c-ink-faint); font-size: var(--fs-sm); padding: var(--sp-8) 0; max-width: var(--measure); line-height: 1.8; }
+  .hint-prompt { color: var(--c-accent); }
+
+  /* ── F2 最近导入列表（空工作区）。reader.ts JS 运行期创建，无 astro cid → :global ── */
+  :global(.recent) { max-width: var(--measure); padding: var(--sp-6) 0; }
+  :global(.recent-head) {
+    color: var(--c-accent);
+    font-size: var(--fs-sm);
+    margin-bottom: var(--sp-3);
+    text-shadow: var(--c-glow);
+  }
+  :global(.recent-head::before) { content: "research ❯ "; color: var(--c-ink-faint); text-shadow: none; }
+  :global(.recent-empty) { color: var(--c-ink-faint); font-size: var(--fs-sm); padding: var(--sp-4) 0; }
+  :global(.recent-list) { list-style: none; display: flex; flex-direction: column; gap: 1px; }
+  :global(.recent-item) { display: flex; align-items: stretch; }
+  :global(.recent-row) {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-3);
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: left;
+    border: 0;
+    border-left: 2px solid transparent;
+    border-radius: 0;
+    background: transparent;
+    color: var(--c-ink-soft);
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    padding: var(--sp-2) var(--sp-3);
+  }
+  :global(.recent-row:hover) {
+    color: var(--c-accent);
+    background: var(--c-bg-sunken);
+    border-left-color: var(--c-accent);
+  }
+  :global(.recent-arrow) { color: var(--c-accent); font-weight: 700; flex: 0 0 auto; }
+  :global(.recent-name) {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  :global(.recent-tag) {
+    flex: 0 0 auto;
+    color: var(--c-ink-faint);
+    font-size: var(--fs-xs);
+  }
+  :global(.recent-tag::before) { content: "["; }
+  :global(.recent-tag::after) { content: "]"; }
+  :global(.recent-date) { flex: 0 0 auto; color: var(--c-ink-faint); font-size: var(--fs-xs); }
+
+  /* F5 删除钮（每项右侧垃圾桶）+ 确认对话框。JS 运行期 → :global */
+  :global(.recent-del) {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--sp-2);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--c-ink-faint);
+    opacity: 0;
+    transition: opacity var(--transition), color var(--transition);
+  }
+  :global(.recent-del .icon) { width: 0.95rem; height: 0.95rem; }
+  :global(.recent-item:hover .recent-del),
+  :global(.recent-del:focus-visible) { opacity: 1; }
+  :global(.recent-del:hover) { color: var(--c-danger); background: transparent; }
+
+  :global(.confirm-overlay) {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sp-6);
+    background: color-mix(in srgb, var(--c-bg-sunken) 78%, transparent);
+    backdrop-filter: blur(2px);
+  }
+  :global(.confirm-card) {
+    width: min(28rem, 92vw);
+    background: var(--c-bg-raised);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    padding: var(--sp-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+  :global(.confirm-msg) { color: var(--c-ink); font-size: var(--fs-sm); line-height: 1.6; word-break: break-word; }
+  :global(.confirm-warn) { color: var(--c-pending); font-size: var(--fs-xs); }
+  :global(.confirm-err) { color: var(--c-danger); font-size: var(--fs-xs); }
+  :global(.confirm-row) { display: flex; justify-content: flex-end; gap: var(--sp-2); margin-top: var(--sp-1); }
+  :global(.confirm-ok) { background: var(--c-danger); border-color: var(--c-danger); color: var(--c-bg); }
+  :global(.confirm-ok:hover:not(:disabled)) { opacity: 0.88; background: var(--c-danger); border-color: var(--c-danger); color: var(--c-bg); }
+  :global(.confirm-ok:disabled) { opacity: 0.5; }
+
+  /* F8：import 弹框 — 复用 confirm-overlay/card 骨架，输入卡沿用 qa-input-row terminal 风。 */
+  :global(.import-card) { gap: var(--sp-2); }
+  :global(.import-dialog-title) {
+    color: var(--c-accent);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  :global(.import-dialog-hint) { color: var(--c-ink-faint); font-size: var(--fs-xs); }
+  :global(.import-dialog-row) {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    background: var(--c-bg-sunken);
+    padding: 0 var(--sp-3);
+    height: 2.5rem;
+    margin-top: var(--sp-1);
+  }
+  :global(.import-dialog-row:focus-within) { border-color: var(--c-accent); }
+  :global(.import-dialog-prefix) { color: var(--c-accent); font-weight: 700; }
+  :global(.import-dialog-input) {
+    flex: 1 1 auto;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--c-ink);
+    font-family: inherit;
+    font-size: var(--fs-sm);
+  }
+  :global(.import-dialog-input::placeholder) { color: var(--c-ink-faint); }
+  :global(.import-dialog-ok:disabled) { opacity: 0.5; }
+  /* readonly 触发器输入框：保留外观但提示可点（pointer）。 */
+  .import input[readonly] { cursor: pointer; }
+
+  /* ── reading blocks: reader.ts JS 运行期创建(document.createElement,无 astro scope cid)。
+     scoped 选择器会被编译成 .blk-row[data-astro-cid-xxx],辐不中运行期 DOM → 全部 :global。 */
+  :global(.blk-row) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-8);
+    padding: var(--sp-3) 0;
+    border-bottom: 1px solid var(--c-line-soft);
+    scroll-margin-top: 4rem;
+  }
+  :global(.col) { max-width: var(--measure); position: relative; }
+  :global(.col-en) { color: var(--c-en); }
+  :global(.col-zh) { color: var(--c-zh); }
+  :global(.zh-placeholder) { color: var(--c-pending); font-size: var(--fs-xs); font-style: normal; }
+  :global(.zh-placeholder::before) { content: "// "; opacity: 0.7; }
+
+  /* 单段翻译触发钮:[译] */
+  :global(.blk-translate-one) {
+    margin-left: var(--sp-3);
+    font-size: var(--fs-xs);
+    padding: 0 var(--sp-2);
+    color: var(--c-accent);
+    border: 1px solid var(--c-accent-dim);
+    background: transparent;
+    vertical-align: baseline;
+  }
+  :global(.blk-translate-one::before) { content: "["; }
+  :global(.blk-translate-one::after) { content: "]"; }
+
+  /* 显示模式:仅中 / 仅英(对照默认两列)。.stream 是静态带 cid,.blk-row/.col-* 是运行期 → 后半 :global。 */
+  .stream[data-view="zh"] :global(.blk-row) { grid-template-columns: 1fr; }
+  .stream[data-view="zh"] :global(.col-en) { display: none; }
+  .stream[data-view="en"] :global(.blk-row) { grid-template-columns: 1fr; }
+  .stream[data-view="en"] :global(.col-zh) { display: none; }
+  .stream[data-view="zh"] :global(.blk-heading .h-en) { display: none; }
+  .stream[data-view="en"] :global(.blk-heading .h-zh) { display: none; }
+
+  :global(.blk-heading) {
+    grid-column: 1 / -1;
+    margin: var(--sp-8) 0 var(--sp-2);
+    scroll-margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  :global(.blk-heading .h-en) { font-weight: 700; color: var(--c-accent); }
+  :global(.blk-heading .h-en::before) { content: "## "; color: var(--c-ink-faint); font-weight: 400; }
+  :global(.blk-heading .h-zh) { font-size: 0.85em; color: var(--c-ink-soft); font-weight: 500; }
+  :global(h2.blk-heading .h-en) { font-size: var(--fs-xl); }
+  :global(h3.blk-heading .h-en) { font-size: var(--fs-lg); }
+  :global(h4.blk-heading .h-en) { font-size: var(--fs-base); }
+
+  :global(.blk-row--math) { grid-template-columns: 1fr; justify-items: center; }
+  :global(.blk-math) { overflow-x: auto; max-width: 100%; padding: var(--sp-3) 0; }
+
+  :global(.blk-fig) {
+    margin: var(--sp-6) 0;
+    text-align: center;
+    padding-bottom: var(--sp-4);
+    border-bottom: 1px solid var(--c-line-soft);
+  }
+  :global(.blk-fig img) {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    background: var(--c-bg-sunken);
+    padding: var(--sp-2);
+  }
+  :global(.blk-fig figcaption) { margin-top: var(--sp-2); font-size: var(--fs-xs); color: var(--c-ink-faint); }
+
+  /* ── M5「AI 问 paper」抽屉:右侧滑出,纯终端皮,全用现有 token ── */
+  #qa-open { display: inline-flex; align-items: center; gap: var(--sp-2); white-space: nowrap; font-size: var(--fs-sm); }
+  #papers-open { display: inline-flex; align-items: center; gap: var(--sp-2); white-space: nowrap; font-size: var(--fs-sm); }
+
+  .qa-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: min(30rem, 92vw);
+    display: flex;
+    flex-direction: column;
+    background: var(--c-bg-raised);
+    border-left: 1px solid var(--c-line);
+    box-shadow: var(--shadow);
+    z-index: 50;
+    transform: translateX(100%);
+    transition: transform var(--transition);
+    will-change: transform;
+  }
+  .qa-drawer[data-open="1"] { transform: translateX(0); }
+  @media (prefers-reduced-motion: reduce) { .qa-drawer { transition: none; } }
+
+  .qa-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--sp-3) var(--sp-4);
+    border-bottom: 1px solid var(--c-line);
+    background: var(--c-bg-sunken);
+  }
+  .qa-title { font-size: var(--fs-sm); color: var(--c-ink-soft); letter-spacing: 0.02em; }
+  .qa-title-prompt { color: var(--c-accent); font-weight: 700; text-shadow: var(--c-glow); }
+  .qa-close { border: 0; padding: var(--sp-1); color: var(--c-ink-faint); }
+  .qa-close:hover:not(:disabled) { border: 0; color: var(--c-accent); background: transparent; }
+
+  .qa-history {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--sp-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+  }
+  /* qa-empty/qa-err 也由 qa-ui.ts 运行期重建(replaceChildren el(...)) → :global */
+  :global(.qa-empty) { color: var(--c-ink-faint); font-size: var(--fs-xs); }
+  :global(.qa-empty.qa-err) { color: var(--c-danger); }
+
+  /* qa-item/q/a/cited/chip 全是 qa-ui.ts JS 创建(无 cid) → :global */
+  :global(.qa-item) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    padding-bottom: var(--sp-4);
+    border-bottom: 1px solid var(--c-line-soft);
+  }
+  :global(.qa-q) { font-size: var(--fs-sm); color: var(--c-accent); }
+  :global(.qa-q-prefix) { color: var(--c-accent); font-weight: 700; }
+  :global(.qa-a) { font-size: var(--fs-sm); color: var(--c-ink); line-height: 1.7; white-space: pre-wrap; }
+  :global(.qa-a.qa-err) { color: var(--c-danger); }
+  :global(.qa-item[data-pending="1"] .qa-a) { color: var(--c-pending); }
+
+  :global(.qa-cited) { display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-1); font-size: var(--fs-xs); }
+  :global(.qa-cited-label) { color: var(--c-ink-faint); }
+  :global(.qa-cited-none) { color: var(--c-ink-faint); }
+  :global(.qa-chip) {
+    font-size: var(--fs-xs);
+    padding: 0 var(--sp-2);
+    color: var(--c-accent);
+    border: 1px solid var(--c-accent-dim);
+    background: transparent;
+    border-radius: var(--radius-sm);
+  }
+  :global(.qa-chip::before) { content: "["; }
+  :global(.qa-chip::after) { content: "]"; }
+  :global(.qa-chip:hover:not(:disabled)) { background: var(--c-accent); color: var(--c-bg); border-color: var(--c-accent); }
+
+  .qa-form {
+    border-top: 1px solid var(--c-line);
+    padding: var(--sp-3) var(--sp-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    background: var(--c-bg-sunken);
+  }
+  .qa-scope { margin-left: 0; align-self: flex-start; }
+  .qa-sel-hint { font-size: var(--fs-xs); color: var(--c-pending); }
+
+  .qa-input-row { display: flex; align-items: center; gap: var(--sp-2); }
+  .qa-input-prefix { color: var(--c-accent); font-weight: 700; }
+  .qa-input-row input {
+    flex: 1;
+    font: inherit;
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--c-ink);
+    background: var(--c-bg-sunken);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-2) var(--sp-3);
+    caret-color: var(--c-accent);
+  }
+  .qa-input-row input::placeholder { color: var(--c-ink-faint); }
+  .qa-input-row input:focus { border-color: var(--c-accent); outline: none; }
+  .qa-input-row input:disabled { opacity: 0.5; }
+  .qa-send { display: inline-flex; align-items: center; gap: var(--sp-1); white-space: nowrap; }
+
+  /* ── F1 fix：共享划词选区菜单（问 AI + 记笔记同一排，不互盖）。
+     selection-menu.ts JS 创建(无 cid) → :global ── */
+  :global(.sel-menu) {
+    position: absolute;
+    z-index: 60;
+    display: none;
+    align-items: stretch;
+    gap: 1px;
+    padding: 1px;
+    background: var(--c-bg-raised);
+    border: 1px solid var(--c-accent);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--c-glow);
+    white-space: nowrap;
+    transform: translateX(-100%);
+  }
+  :global(.sel-menu[data-open="1"]) { display: inline-flex; }
+  :global(.sel-menu-btn) {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    height: 1.7rem;
+    padding: 0 var(--sp-2);
+    font-size: var(--fs-xs);
+    color: var(--c-accent);
+    border: 0;
+    border-radius: calc(var(--radius-sm) - 1px);
+    background: transparent;
+    white-space: nowrap;
+  }
+  :global(.sel-menu-btn .icon) { width: 0.9rem; height: 0.9rem; }
+  :global(.sel-menu-btn:hover:not(:disabled)) { background: var(--c-accent); color: var(--c-bg); }
+  :global(.sel-menu-btn + .sel-menu-btn) { border-left: 1px solid var(--c-line-soft); }
+
+  /* ── F1 批注/笔记：书签 gutter + 划词浮钮 + 输入小卡 + 笔记抽屉卡 ── */
+  #notes-open { display: inline-flex; align-items: center; gap: var(--sp-2); white-space: nowrap; font-size: var(--fs-sm); }
+  .notes-count { color: var(--c-accent); font-size: var(--fs-xs); }
+  .notes-count:not(:empty)::before { content: "["; color: var(--c-ink-faint); }
+  .notes-count:not(:empty)::after { content: "]"; color: var(--c-ink-faint); }
+
+  /* 书签 gutter：有笔记的 block 左侧绝对定位书签 SVG。block 是运行期 DOM → :global */
+  :global(.blk-row[data-has-note]), :global(.blk-heading[data-has-note]), :global(.blk-fig[data-has-note]) {
+    position: relative;
+  }
+  :global(.note-bookmark) {
+    position: absolute;
+    left: -1.4rem;
+    top: var(--sp-3);
+    width: 1.1rem;
+    height: 1.1rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--c-accent);
+    border: 0;
+    background: transparent;
+    text-shadow: var(--c-glow);
+  }
+  :global(.note-bookmark:hover:not(:disabled)) { color: var(--c-accent); background: transparent; filter: brightness(1.3); }
+  :global(.note-bookmark .icon) { width: 1rem; height: 1rem; }
+
+  /* ToC 章节有笔记提示点 */
+  :global(.toc-note-dot) { color: var(--c-accent); margin-left: 0.35em; text-shadow: var(--c-glow); }
+
+  /* 跳转高亮闪烁 */
+  :global(.note-flash) { animation: noteFlash 1.5s ease-out; }
+  @keyframes noteFlash {
+    0%, 30% { background: var(--c-accent-dim); box-shadow: -3px 0 0 var(--c-accent); }
+    100% { background: transparent; box-shadow: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { :global(.note-flash) { animation: none; } }
+
+  /* F1 fix：划词浮钮已统一为 .sel-menu（见上），原 .note-sel-btn / .qa-sel-btn 已移除。 */
+
+
+  /* 输入小卡（划词后弹出） */
+  :global(.note-card) {
+    position: absolute;
+    z-index: 70;
+    width: min(22rem, 90vw);
+    right: var(--sp-6);
+    display: none;
+    flex-direction: column;
+    gap: var(--sp-2);
+    padding: var(--sp-3);
+    background: var(--c-bg-raised);
+    border: 1px solid var(--c-accent);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+  }
+  :global(.note-card[data-open="1"]) { display: flex; }
+  :global(.note-card-quote) {
+    margin: 0;
+    padding-left: var(--sp-2);
+    border-left: 2px solid var(--c-accent-dim);
+    color: var(--c-ink-soft);
+    font-size: var(--fs-xs);
+    max-height: 4.5rem;
+    overflow-y: auto;
+  }
+  :global(.note-card-form) { display: flex; flex-direction: column; gap: var(--sp-2); }
+  :global(.note-card-ta), :global(.note-edit-ta) {
+    font: inherit;
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--c-ink);
+    background: var(--c-bg-sunken);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-2);
+    resize: vertical;
+    caret-color: var(--c-accent);
+  }
+  :global(.note-card-ta:focus), :global(.note-edit-ta:focus) { border-color: var(--c-accent); outline: none; }
+  :global(.note-card-row), :global(.note-edit-row) { display: flex; gap: var(--sp-2); justify-content: flex-end; }
+  :global(.note-form-err) { color: var(--c-danger); font-size: var(--fs-xs); margin: 0; }
+
+  /* 笔记抽屉卡（复用 qa-history 容器）。JS 创建 → :global */
+  :global(.note-empty) { color: var(--c-ink-faint); font-size: var(--fs-xs); }
+  :global(.note-empty.note-err) { color: var(--c-danger); }
+  :global(.note-item) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    padding-bottom: var(--sp-4);
+    border-bottom: 1px solid var(--c-line-soft);
+  }
+  :global(.note-card-flash) { animation: noteCardFlash 1.5s ease-out; }
+  @keyframes noteCardFlash {
+    0%, 30% { background: var(--c-accent-dim); }
+    100% { background: transparent; }
+  }
+  :global(.note-quote) {
+    margin: 0;
+    padding-left: var(--sp-2);
+    border-left: 2px solid var(--c-accent-dim);
+    color: var(--c-ink-soft);
+    font-size: var(--fs-xs);
+    cursor: pointer;
+  }
+  :global(.note-quote:hover) { color: var(--c-accent); border-left-color: var(--c-accent); }
+  :global(.note-quote-prefix) { color: var(--c-accent); }
+  :global(.note-body) { font-size: var(--fs-sm); color: var(--c-ink); line-height: 1.7; white-space: pre-wrap; }
+  :global(.note-actions) { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+  :global(.note-act) {
+    font-size: var(--fs-xs);
+    padding: 0 var(--sp-2);
+    color: var(--c-ink-soft);
+    border: 1px solid var(--c-line);
+    background: transparent;
+    border-radius: var(--radius-sm);
+  }
+  :global(.note-act:hover:not(:disabled)) { color: var(--c-accent); border-color: var(--c-accent); background: transparent; }
+  :global(.note-act-danger:hover:not(:disabled)) { color: var(--c-danger); border-color: var(--c-danger); }
+  :global(.note-edit-form) { display: flex; flex-direction: column; gap: var(--sp-2); }
+
+  /* ── responsive(沿用 M3 断点,不退化) ── */
+  @media (max-width: 1100px) {
+    .workbench { grid-template-columns: 12rem 1fr; }
+    .stream { padding: var(--sp-6); }
+  }
+  @media (max-width: 820px) {
+    .workbench { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .topbar { padding: var(--sp-2) var(--sp-4); }
+    .topbar-right { flex: 1 1 100%; justify-content: space-between; }
+    .import { flex: 1; }
+    .stream[data-view="both"] :global(.blk-row) { grid-template-columns: 1fr; gap: var(--sp-2); }
+    .stream[data-view="both"] :global(.col-en) {
+      padding-bottom: var(--sp-2);
+      border-bottom: 1px dashed var(--c-line-soft);
+    }
+    .reader-toolbar { padding: var(--sp-2) var(--sp-4); }
+    .stream { padding: var(--sp-4); }
+  }
+  #mindmap-open { display: inline-flex; align-items: center; gap: var(--sp-2); white-space: nowrap; font-size: var(--fs-sm); }
+
+  /* ── F4 思维导图全屏遮罩（terminal 皮）── */
+  .mindmap-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--c-bg-sunken) 78%, transparent);
+    backdrop-filter: blur(2px);
+    padding: var(--sp-6);
+  }
+  .mindmap-overlay[data-open="1"] { display: flex; }
+  .mindmap-panel {
+    width: min(96vw, 72rem);
+    height: min(90vh, 48rem);
+    display: flex;
+    flex-direction: column;
+    background: var(--c-bg-raised);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .mindmap-head {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    border-bottom: 1px solid var(--c-line);
+    background: var(--c-bg-sunken);
+  }
+  .mindmap-status { font-size: var(--fs-xs); color: var(--c-ink-soft); flex: 1; }
+  .mindmap-status[data-kind="error"] { color: var(--c-danger); }
+  .mindmap-status[data-kind="ok"] { color: var(--c-ok); }
+  .mindmap-head-actions { display: inline-flex; align-items: center; gap: var(--sp-2); margin-left: auto; }
+  #mindmap-regen {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    font-size: var(--fs-xs);
+    padding: var(--sp-1) var(--sp-2);
+    color: var(--c-accent);
+    border: 1px solid var(--c-accent-dim);
+    background: transparent;
+  }
+  #mindmap-regen:hover:not(:disabled) { background: var(--c-accent); color: var(--c-bg); border-color: var(--c-accent); }
+  #mindmap-regen:disabled { opacity: 0.5; }
+  .mindmap-stage {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+    background: var(--c-bg);
+  }
+  /* markmap SVG：运行期创建（无 cid）→ :global。填满舞台 + terminal 配色覆盖。 */
+  :global(.mindmap-svg) { width: 100%; height: 100%; display: block; }
+  /* markmap 节点连线/文字：绿橙线条深底（覆盖 markmap 默认配色）。 */
+  :global(.mindmap-svg .markmap-link) { stroke: var(--c-accent-dim); }
+  :global(.mindmap-svg .markmap-node > circle) { stroke: var(--c-accent); fill: var(--c-bg-raised); }
+  :global(.mindmap-svg .markmap-node > text) { fill: var(--c-ink); font-family: var(--font-mono); }
+  :global(.mindmap-svg .markmap-node line) { stroke: var(--c-accent); }
+  :global(.mindmap-svg .markmap-foreign) { color: var(--c-ink); font-family: var(--font-mono); }
+  :global(.mindmap-svg .markmap-foreign a) { color: var(--c-accent); }
+
+  @media (max-width: 420px) {
+    .topbar { padding: var(--sp-1) var(--sp-3); }
+    .brand { gap: var(--sp-1); flex: 1 1 100%; }
+    .tagline { display: none; }
+    .topbar-right { gap: var(--sp-2); flex-wrap: wrap; }
+    .import { flex: 1 1 100%; }
+    .stream { padding: var(--sp-3); overflow-x: hidden; }
+    :global(.blk-math) { max-width: calc(100vw - 1.5rem); }
+    .reader-toolbar { gap: var(--sp-2); }
+    .seg { flex-wrap: wrap; }
+    .qa-drawer { width: 100vw; }
+    /* F1 笔记：375px 下输入小卡/书签不溢出 */
+    :global(.note-card) { width: calc(100vw - 1.5rem); right: 0.75rem; left: 0.75rem !important; }
+    :global(.note-bookmark) { left: -1rem; }
+    .notes-drawer { width: 100vw; }
+    /* F2 最近列表 375px 不溢出：名称可缩，日期/tag 不换行 */
+    :global(.recent-row) { gap: var(--sp-2); padding: var(--sp-2); }
+    :global(.recent-date) { display: none; }
+    /* F5：触屏无 hover → 删除钮常驻显示；确认框满宽 */
+    :global(.recent-del) { opacity: 1; }
+    :global(.confirm-overlay) { padding: var(--sp-4); }
+    /* F4 脑图：375px 遮罩满屏 + 头部按钮可换行 */
+    .mindmap-overlay { padding: 0; }
+    .mindmap-panel { width: 100vw; height: 100vh; border-radius: 0; }
+    .mindmap-head { flex-wrap: wrap; gap: var(--sp-1); }
+    #mindmap-regen span { display: none; }
+    .mindmap-status { flex: 1 1 100%; order: 3; }
+  }
+</style>

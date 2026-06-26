@@ -1,0 +1,26 @@
+{
+  "name": "research",
+  "version": "0.1.0",
+  "private": true,
+  "description": "论文精读工作台前端（对照阅读）。Astro + CF Pages。",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "test:unit": "npx tsx test/translate-retry.test.mjs && npx tsx test/parse-arxiv-parity.test.mts",
+    "test:parity": "npx tsx test/parse-arxiv-parity.test.mts"
+  },
+  "dependencies": {
+    "astro": "^4.16.0",
+    "katex": "^0.16.11",
+    "pdfjs-dist": "^6.0.227"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@types/katex": "^0.16.7",
+    "linkedom": "^0.18.12",
+    "tsx": "^4.22.4",
+    "typescript": "^5.7.2"
+  }
+}
