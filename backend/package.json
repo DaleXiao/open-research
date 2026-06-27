@@ -1,0 +1,24 @@
+{
+  "name": "research-worker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "bash scripts/test-parse.sh",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260610.1",
+    "@types/node": "^22.19.20",
+    "tsx": "^4.22.4",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.99.0"
+  }
+}

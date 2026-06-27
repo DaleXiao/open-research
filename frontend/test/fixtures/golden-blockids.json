@@ -1,0 +1,1241 @@
+{
+  "1706.03762v7": {
+    "title": "Attention Is All You Need",
+    "block_count": 104,
+    "blocks": [
+      {
+        "id": "abstract1",
+        "type": "para",
+        "sec": "abstract",
+        "order": 0,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "p1.1",
+        "type": "para",
+        "sec": "",
+        "order": 1,
+        "level": 0,
+        "translate": true
+      },
+      {
+        "id": "S1",
+        "type": "heading",
+        "sec": "S1",
+        "order": 2,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S1.p1.1",
+        "type": "para",
+        "sec": "S1",
+        "order": 3,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S1.p2.3",
+        "type": "para",
+        "sec": "S1",
+        "order": 4,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S1.p3.1",
+        "type": "para",
+        "sec": "S1",
+        "order": 5,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S1.p4.1",
+        "type": "para",
+        "sec": "S1",
+        "order": 6,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S2",
+        "type": "heading",
+        "sec": "S2",
+        "order": 7,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S2.p1.1",
+        "type": "para",
+        "sec": "S2",
+        "order": 8,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S2.p2.1",
+        "type": "para",
+        "sec": "S2",
+        "order": 9,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S2.p3.1",
+        "type": "para",
+        "sec": "S2",
+        "order": 10,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S2.p4.1",
+        "type": "para",
+        "sec": "S2",
+        "order": 11,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S3",
+        "type": "heading",
+        "sec": "S3",
+        "order": 12,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S3.F1",
+        "type": "figure",
+        "sec": "S3",
+        "order": 13,
+        "level": 1,
+        "translate": false
+      },
+      {
+        "id": "S3.p1.4",
+        "type": "para",
+        "sec": "S3",
+        "order": 14,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S3.p2.1",
+        "type": "para",
+        "sec": "S3",
+        "order": 15,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S3.SS1",
+        "type": "heading",
+        "sec": "S3.SS1",
+        "order": 16,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S3.SS1.SSS0.Px1",
+        "type": "heading",
+        "sec": "S3.SS1.SSS0.Px1",
+        "order": 17,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.SS1.SSS0.Px1.p1.4",
+        "type": "para",
+        "sec": "S3.SS1.SSS0.Px1",
+        "order": 18,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.SS1.SSS0.Px2",
+        "type": "heading",
+        "sec": "S3.SS1.SSS0.Px2",
+        "order": 19,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.SS1.SSS0.Px2.p1.3",
+        "type": "para",
+        "sec": "S3.SS1.SSS0.Px2",
+        "order": 20,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.SS2",
+        "type": "heading",
+        "sec": "S3.SS2",
+        "order": 21,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S3.SS2.p1.1",
+        "type": "para",
+        "sec": "S3.SS2",
+        "order": 22,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S3.SS2.SSS1",
+        "type": "heading",
+        "sec": "S3.SS2.SSS1",
+        "order": 23,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.SS2.SSS1.p1.3",
+        "type": "para",
+        "sec": "S3.SS2.SSS1",
+        "order": 24,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.SS2.SSS1.p2.3",
+        "type": "para",
+        "sec": "S3.SS2.SSS1",
+        "order": 25,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.E1",
+        "type": "math",
+        "sec": "S3.SS2.SSS1",
+        "order": 26,
+        "level": 3,
+        "translate": false
+      },
+      {
+        "id": "S3.SS2.SSS1.p4.1",
+        "type": "para",
+        "sec": "S3.SS2.SSS1",
+        "order": 27,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.SS2.SSS1.p5.4",
+        "type": "para",
+        "sec": "S3.SS2.SSS1",
+        "order": 28,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.SS2.SSS2",
+        "type": "heading",
+        "sec": "S3.SS2.SSS2",
+        "order": 29,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.F2",
+        "type": "figure",
+        "sec": "S3.SS2.SSS2",
+        "order": 30,
+        "level": 3,
+        "translate": false
+      },
+      {
+        "id": "S3.SS2.SSS2.p1.6",
+        "type": "para",
+        "sec": "S3.SS2.SSS2",
+        "order": 31,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.SS2.SSS2.p2.1",
+        "type": "para",
+        "sec": "S3.SS2.SSS2",
+        "order": 32,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "Sx1.EGx1",
+        "type": "math",
+        "sec": "S3.SS2.SSS2",
+        "order": 33,
+        "level": 3,
+        "translate": false
+      },
+      {
+        "id": "S3.SS2.SSS2.p4.4",
+        "type": "para",
+        "sec": "S3.SS2.SSS2",
+        "order": 34,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.SS2.SSS2.p5.2",
+        "type": "para",
+        "sec": "S3.SS2.SSS2",
+        "order": 35,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.SS2.SSS3",
+        "type": "heading",
+        "sec": "S3.SS2.SSS3",
+        "order": 36,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.SS2.SSS3.p1.1",
+        "type": "para",
+        "sec": "S3.SS2.SSS3",
+        "order": 37,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S3.SS3",
+        "type": "heading",
+        "sec": "S3.SS3",
+        "order": 38,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S3.SS3.p1.1",
+        "type": "para",
+        "sec": "S3.SS3",
+        "order": 39,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S3.E2",
+        "type": "math",
+        "sec": "S3.SS3",
+        "order": 40,
+        "level": 2,
+        "translate": false
+      },
+      {
+        "id": "S3.SS3.p3.2",
+        "type": "para",
+        "sec": "S3.SS3",
+        "order": 41,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S3.SS4",
+        "type": "heading",
+        "sec": "S3.SS4",
+        "order": 42,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S3.SS4.p1.2",
+        "type": "para",
+        "sec": "S3.SS4",
+        "order": 43,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S3.SS5",
+        "type": "heading",
+        "sec": "S3.SS5",
+        "order": 44,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S3.SS5.p1.1",
+        "type": "para",
+        "sec": "S3.SS5",
+        "order": 45,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S3.SS5.p2.1",
+        "type": "para",
+        "sec": "S3.SS5",
+        "order": 46,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "Sx1.EGx2",
+        "type": "math",
+        "sec": "S3.SS5",
+        "order": 47,
+        "level": 2,
+        "translate": false
+      },
+      {
+        "id": "S3.SS5.p4.7",
+        "type": "para",
+        "sec": "S3.SS5",
+        "order": 48,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S3.SS5.p5.1",
+        "type": "para",
+        "sec": "S3.SS5",
+        "order": 49,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S4",
+        "type": "heading",
+        "sec": "S4",
+        "order": 50,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S4.p1.3",
+        "type": "para",
+        "sec": "S4",
+        "order": 51,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S4.p2.1",
+        "type": "para",
+        "sec": "S4",
+        "order": 52,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S4.p3.1",
+        "type": "para",
+        "sec": "S4",
+        "order": 53,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S4.T1",
+        "type": "figure",
+        "sec": "S4",
+        "order": 54,
+        "level": 1,
+        "translate": false
+      },
+      {
+        "id": "S4.p4.5",
+        "type": "para",
+        "sec": "S4",
+        "order": 55,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S4.p5.6",
+        "type": "para",
+        "sec": "S4",
+        "order": 56,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S4.p6.1",
+        "type": "para",
+        "sec": "S4",
+        "order": 57,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S5",
+        "type": "heading",
+        "sec": "S5",
+        "order": 58,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S5.p1.1",
+        "type": "para",
+        "sec": "S5",
+        "order": 59,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S5.SS1",
+        "type": "heading",
+        "sec": "S5.SS1",
+        "order": 60,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS1.p1.1",
+        "type": "para",
+        "sec": "S5.SS1",
+        "order": 61,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS2",
+        "type": "heading",
+        "sec": "S5.SS2",
+        "order": 62,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS2.p1.1",
+        "type": "para",
+        "sec": "S5.SS2",
+        "order": 63,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS3",
+        "type": "heading",
+        "sec": "S5.SS3",
+        "order": 64,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS3.p1.3",
+        "type": "para",
+        "sec": "S5.SS3",
+        "order": 65,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.E3",
+        "type": "math",
+        "sec": "S5.SS3",
+        "order": 66,
+        "level": 2,
+        "translate": false
+      },
+      {
+        "id": "S5.SS3.p3.2",
+        "type": "para",
+        "sec": "S5.SS3",
+        "order": 67,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS4",
+        "type": "heading",
+        "sec": "S5.SS4",
+        "order": 68,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS4.p1.1",
+        "type": "para",
+        "sec": "S5.SS4",
+        "order": 69,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS4.SSS0.Px1",
+        "type": "heading",
+        "sec": "S5.SS4.SSS0.Px1",
+        "order": 70,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S5.SS4.SSS0.Px1.p1.1",
+        "type": "para",
+        "sec": "S5.SS4.SSS0.Px1",
+        "order": 71,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S5.SS4.SSS0.Px2",
+        "type": "heading",
+        "sec": "S5.SS4.SSS0.Px2",
+        "order": 72,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S5.SS4.SSS0.Px2.p1.1",
+        "type": "para",
+        "sec": "S5.SS4.SSS0.Px2",
+        "order": 73,
+        "level": 3,
+        "translate": true
+      },
+      {
+        "id": "S6",
+        "type": "heading",
+        "sec": "S6",
+        "order": 74,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S6.SS1",
+        "type": "heading",
+        "sec": "S6.SS1",
+        "order": 75,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.T2",
+        "type": "figure",
+        "sec": "S6.SS1",
+        "order": 76,
+        "level": 2,
+        "translate": false
+      },
+      {
+        "id": "S6.SS1.p1.4",
+        "type": "para",
+        "sec": "S6.SS1",
+        "order": 77,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.SS1.p2.4",
+        "type": "para",
+        "sec": "S6.SS1",
+        "order": 78,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.SS1.p3.3",
+        "type": "para",
+        "sec": "S6.SS1",
+        "order": 79,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.SS1.p4.1",
+        "type": "para",
+        "sec": "S6.SS1",
+        "order": 80,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.SS2",
+        "type": "heading",
+        "sec": "S6.SS2",
+        "order": 81,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.T3",
+        "type": "figure",
+        "sec": "S6.SS2",
+        "order": 82,
+        "level": 2,
+        "translate": false
+      },
+      {
+        "id": "S6.SS2.p1.1",
+        "type": "para",
+        "sec": "S6.SS2",
+        "order": 83,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.SS2.p2.1",
+        "type": "para",
+        "sec": "S6.SS2",
+        "order": 84,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.SS2.p3.1",
+        "type": "para",
+        "sec": "S6.SS2",
+        "order": 85,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.SS3",
+        "type": "heading",
+        "sec": "S6.SS3",
+        "order": 86,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.T4",
+        "type": "figure",
+        "sec": "S6.SS3",
+        "order": 87,
+        "level": 2,
+        "translate": false
+      },
+      {
+        "id": "S6.SS3.p1.1",
+        "type": "para",
+        "sec": "S6.SS3",
+        "order": 88,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.SS3.p2.1",
+        "type": "para",
+        "sec": "S6.SS3",
+        "order": 89,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.SS3.p3.3",
+        "type": "para",
+        "sec": "S6.SS3",
+        "order": 90,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.SS3.p4.1",
+        "type": "para",
+        "sec": "S6.SS3",
+        "order": 91,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6.SS3.p5.1",
+        "type": "para",
+        "sec": "S6.SS3",
+        "order": 92,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S7",
+        "type": "heading",
+        "sec": "S7",
+        "order": 93,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S7.p1.1",
+        "type": "para",
+        "sec": "S7",
+        "order": 94,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S7.p2.1",
+        "type": "para",
+        "sec": "S7",
+        "order": 95,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S7.p3.1",
+        "type": "para",
+        "sec": "S7",
+        "order": 96,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S7.p4.1",
+        "type": "para",
+        "sec": "S7",
+        "order": 97,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S7.SS0.SSS0.Px1",
+        "type": "heading",
+        "sec": "S7.SS0.SSS0.Px1",
+        "order": 98,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S7.SS0.SSS0.Px1.p1.1",
+        "type": "para",
+        "sec": "S7.SS0.SSS0.Px1",
+        "order": 99,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "Sx1",
+        "type": "heading",
+        "sec": "Sx1",
+        "order": 100,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "Sx1.F3",
+        "type": "figure",
+        "sec": "Sx1",
+        "order": 101,
+        "level": 1,
+        "translate": false
+      },
+      {
+        "id": "Sx1.F4",
+        "type": "figure",
+        "sec": "Sx1",
+        "order": 102,
+        "level": 1,
+        "translate": false
+      },
+      {
+        "id": "Sx1.F5",
+        "type": "figure",
+        "sec": "Sx1",
+        "order": 103,
+        "level": 1,
+        "translate": false
+      }
+    ],
+    "toc_ids": [
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6",
+      "S7",
+      "Sx1"
+    ]
+  },
+  "2310.06825v1": {
+    "title": "Mistral 7B",
+    "block_count": 47,
+    "blocks": [
+      {
+        "id": "abstract1",
+        "type": "para",
+        "sec": "abstract",
+        "order": 0,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "p1.2",
+        "type": "para",
+        "sec": "",
+        "order": 1,
+        "level": 0,
+        "translate": true
+      },
+      {
+        "id": "S1",
+        "type": "heading",
+        "sec": "S1",
+        "order": 2,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S1.p1.1",
+        "type": "para",
+        "sec": "S1",
+        "order": 3,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S1.p2.1",
+        "type": "para",
+        "sec": "S1",
+        "order": 4,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S1.p3.1",
+        "type": "para",
+        "sec": "S1",
+        "order": 5,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S1.p4.1",
+        "type": "para",
+        "sec": "S1",
+        "order": 6,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S2",
+        "type": "heading",
+        "sec": "S2",
+        "order": 7,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S2.F1",
+        "type": "figure",
+        "sec": "S2",
+        "order": 8,
+        "level": 1,
+        "translate": false
+      },
+      {
+        "id": "S2.9",
+        "type": "figure",
+        "sec": "S2",
+        "order": 9,
+        "level": 1,
+        "translate": false
+      },
+      {
+        "id": "S2.p1.1",
+        "type": "para",
+        "sec": "S2",
+        "order": 10,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S2.p2.11",
+        "type": "para",
+        "sec": "S2",
+        "order": 11,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S2.p3.6",
+        "type": "para",
+        "sec": "S2",
+        "order": 12,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S2.F2",
+        "type": "figure",
+        "sec": "S2",
+        "order": 13,
+        "level": 1,
+        "translate": false
+      },
+      {
+        "id": "S2.p4.2",
+        "type": "para",
+        "sec": "S2",
+        "order": 14,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S2.F3",
+        "type": "figure",
+        "sec": "S2",
+        "order": 15,
+        "level": 1,
+        "translate": false
+      },
+      {
+        "id": "S3",
+        "type": "heading",
+        "sec": "S3",
+        "order": 16,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S3.p1.1",
+        "type": "para",
+        "sec": "S3",
+        "order": 17,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S3.I1.i1.p1.1",
+        "type": "para",
+        "sec": "S3",
+        "order": 18,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S3.p3.1",
+        "type": "para",
+        "sec": "S3",
+        "order": 19,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S3.p4.1",
+        "type": "para",
+        "sec": "S3",
+        "order": 20,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S3.p5.1",
+        "type": "para",
+        "sec": "S3",
+        "order": 21,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S3.F4",
+        "type": "figure",
+        "sec": "S3",
+        "order": 22,
+        "level": 1,
+        "translate": false
+      },
+      {
+        "id": "S3.T2",
+        "type": "figure",
+        "sec": "S3",
+        "order": 23,
+        "level": 1,
+        "translate": false
+      },
+      {
+        "id": "S3.F5",
+        "type": "figure",
+        "sec": "S3",
+        "order": 24,
+        "level": 1,
+        "translate": false
+      },
+      {
+        "id": "S3.fig1",
+        "type": "figure",
+        "sec": "S3",
+        "order": 25,
+        "level": 1,
+        "translate": false
+      },
+      {
+        "id": "S4",
+        "type": "heading",
+        "sec": "S4",
+        "order": 26,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S4.p1.1",
+        "type": "para",
+        "sec": "S4",
+        "order": 27,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S4.p2.1",
+        "type": "para",
+        "sec": "S4",
+        "order": 28,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S5",
+        "type": "heading",
+        "sec": "S5",
+        "order": 29,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S5.p1.1",
+        "type": "para",
+        "sec": "S5",
+        "order": 30,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S5.SS1",
+        "type": "heading",
+        "sec": "S5.SS1",
+        "order": 31,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS1.p1.1",
+        "type": "para",
+        "sec": "S5.SS1",
+        "order": 32,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS1.p2.1",
+        "type": "para",
+        "sec": "S5.SS1",
+        "order": 33,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS1.3",
+        "type": "figure",
+        "sec": "S5.SS1",
+        "order": 34,
+        "level": 2,
+        "translate": false
+      },
+      {
+        "id": "S5.SS1.p3.1",
+        "type": "para",
+        "sec": "S5.SS1",
+        "order": 35,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS1.p4.1",
+        "type": "para",
+        "sec": "S5.SS1",
+        "order": 36,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.T5",
+        "type": "figure",
+        "sec": "S5.SS1",
+        "order": 37,
+        "level": 2,
+        "translate": false
+      },
+      {
+        "id": "S5.SS2",
+        "type": "heading",
+        "sec": "S5.SS2",
+        "order": 38,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS2.p1.1",
+        "type": "para",
+        "sec": "S5.SS2",
+        "order": 39,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS2.p2.1",
+        "type": "para",
+        "sec": "S5.SS2",
+        "order": 40,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S5.SS2.p3.1",
+        "type": "para",
+        "sec": "S5.SS2",
+        "order": 41,
+        "level": 2,
+        "translate": true
+      },
+      {
+        "id": "S6",
+        "type": "heading",
+        "sec": "S6",
+        "order": 42,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "S6.p1.1",
+        "type": "para",
+        "sec": "S6",
+        "order": 43,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "Sx1",
+        "type": "heading",
+        "sec": "Sx1",
+        "order": 44,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "Sx1.p1.1",
+        "type": "para",
+        "sec": "Sx1",
+        "order": 45,
+        "level": 1,
+        "translate": true
+      },
+      {
+        "id": "Sx1.F6",
+        "type": "figure",
+        "sec": "Sx1",
+        "order": 46,
+        "level": 1,
+        "translate": false
+      }
+    ],
+    "toc_ids": [
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6",
+      "Sx1"
+    ]
+  }
+}

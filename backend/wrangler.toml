@@ -1,0 +1,53 @@
+name = "research-worker"
+main = "src/index.ts"
+compatibility_date = "2026-06-10"
+
+# Backend Worker for the reading workbench. Pairs with the CF Pages frontend
+# (see ../frontend); the Worker takes over /api/* on the same origin.
+routes = [
+  { pattern = "research.example.com/api/*", zone_name = "example.com" }
+]
+
+# All LLM traffic is proxied through an external LLM gateway (see [[services]]
+# below). The gateway itself is NOT part of this repo — bring your own.
+[vars]
+LLM_GATEWAY_URL = "https://api-llm.example.com"
+QWEN_MT_MODEL = "qwen-mt-turbo"
+# QA model. qwen3.7-plus with enable_thinking:false keeps QA latency low
+# (~3s observed) so it stays well inside the 30s wall-clock budget.
+QA_MODEL = "qwen3.7-plus"
+CORS_ORIGIN = "https://research.example.com"
+
+# D1: paper metadata + translation cache. Create your own D1 database and put
+# its id below (see `wrangler d1 create research`).
+[[d1_databases]]
+binding = "DB"
+database_name = "research"
+database_id = "<your-d1-database-id>"
+migrations_dir = "migrations"
+
+# ---- LLM gateway access -----------------------------------------------------
+# This Worker needs an LLM gateway that exposes an OpenAI-compatible
+# /v1/chat/completions and /v1/embeddings surface. You can wire it up two ways:
+#
+#   1. Plain HTTP: set LLM_GATEWAY_URL above to your gateway's base URL. The
+#      client in src/llm/gateway.ts will call it via globalThis.fetch.
+#
+#   2. Service binding (same Cloudflare account): bind the gateway Worker as
+#      API_LLM below. When the binding is present, gateway.ts routes calls
+#      through binding.fetch (in-runtime, avoiding a public-edge round trip);
+#      when it is absent (e.g. `wrangler dev` / `npm test`), it automatically
+#      falls back to fetch(LLM_GATEWAY_URL), so local runs still work.
+#
+# The LLM gateway service is intentionally not open-sourced here — supply your
+# own. If you don't use a service binding, you can delete this [[services]]
+# block entirely and rely on LLM_GATEWAY_URL.
+[[services]]
+binding = "API_LLM"
+service = "api-llm-worker"
+
+# Secrets (do NOT commit values; set with `wrangler secret put <NAME>`):
+#   SERVICE_TOKEN_RESEARCH   bearer token this Worker presents to the LLM gateway
+#   USERS_JSON               login accounts, e.g. {"alice":"<password>"} (same value as the frontend Pages app)
+#   SESSION_SECRET           HMAC signing key for session cookies (same value as the frontend middleware, so cookies interoperate)
+#   ⚠ If USERS_JSON / SESSION_SECRET are unset, every /api/* request returns 503 (fail-closed; never silently open).
